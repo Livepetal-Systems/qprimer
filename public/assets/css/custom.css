@@ -1,0 +1,38 @@
+ 
+.custom-image {
+    width: 279px;
+    display: block;
+  }
+  
+  .custom-image input {
+    display: none;
+  }
+  
+  .custom-image label {
+    width: 100%;
+    height: 214px;
+    background-image: url(../img/upload.jpg?h=ed9102f208cf8c388f0ce525635e7b0f);
+    background-size: contain;
+    color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-repeat: no-repeat;
+    margin-bottom: 0;
+  }
+  
+  .custom-image span {
+    padding: 12px;
+    background-color: #0e5dbe;
+    width: 100%;
+    color: #ffff;
+    display: block;
+  }
+  
+  @media (max-width: 576px) {
+    .custom-image {
+      height: 179px;
+      background-position: center center;
+      width: 100%;
+    }
+  }
