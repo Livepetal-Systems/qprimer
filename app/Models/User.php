@@ -29,7 +29,7 @@ class User extends Authenticatable
         'email',
         'password',
         'live_id',
-        'phone',
+        'phones',
         'photo',
         'api_token',
     ];
