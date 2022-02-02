@@ -45,7 +45,7 @@ class ApiController extends Controller
                 'program_id' => $test->program_id,
                 'total_questions' => $test->questions,
                 'total_correct' => $test->correct,
-                'time_spent' => $test->end-$test->start,
+                'time_spent' => $test->end->$test->start,
                 'date' => $test->created_at,
             ];
         }
@@ -145,7 +145,6 @@ class ApiController extends Controller
                 'year' => $pro->yer->year,
             ];
         }
-
         return $arr;
     }
 
@@ -177,7 +176,7 @@ class ApiController extends Controller
                 'student' => '',
                 'start' => '',
                 'end' => '',
-                'total_question' => '',
+                'total_question' => $program->questions->count(),
                 'total_correct' => ''
             ],
             'questions' => $this->pickQuestion($program)
@@ -229,7 +228,7 @@ class ApiController extends Controller
         Test::where('id', $testId)->update([ "correct" => $to->total,  "answers" => json_encode($to->answers) ]);
         session()->forget('que'); session()->forget('p_info');
         session()->forget('question_num'); session()->forget('qa');
-        queryForHistory($info['student']);
+        // queryForHistory($info['student']);
         return response([
             'message' => 'Exam has been completed',
             'success' => true,

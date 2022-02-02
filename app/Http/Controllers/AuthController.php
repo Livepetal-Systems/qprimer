@@ -7,11 +7,38 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
 
 
 
 class AuthController extends Controller
 {
+
+
+
+
+    function login(Request $request)
+    {
+
+        $res = Http::asForm()->post(env('LINK'), [
+            'LoginUserViaCbtGet' => 'good',
+            'email' => $request->email,
+            'password' => $request->password ?? '',
+        ]);
+        $user = [
+            'email' => $request->email,
+            'password' => $request->password,
+        ];
+        if ($res['status'] == 1) {
+            $data = $res['data'];
+            $create = $this->createUser($data);
+            $userData = $this->pAuth($user);
+            if(auth()->user()->role > 1) { return redirect('/control')->with('success', 'welcome back'); }
+            return redirect('/user')->with('success', 'welcome back');
+        }
+        return back()->with('error', $res['message']);
+    }
+
 
 
 
@@ -23,7 +50,7 @@ class AuthController extends Controller
         ])->validate();
         User::where('id', $request->id)->update([
             'firstname' => $val['firstname'] ,
-            'lastname' =>  $val['lastname'], 
+            'lastname' =>  $val['lastname'],
         ]);
         return back()->with('success', 'Profile updated scucssfully');
     }
@@ -59,7 +86,7 @@ class AuthController extends Controller
             'new_password' => 'string|required|min:6',
             'confirm_password' => 'string|required',
         ])->validate();
-        
+
         if(password_verify($val['old_password'], auth()->user()->id)){
             if($val['new_password'] == $val['confirm_password']){
                 User::where('id', auth()->user()->id)->update([
@@ -73,46 +100,85 @@ class AuthController extends Controller
     }
 
 
-    function loginUser(Request $request)
+
+
+
+
+
+    function pAuth($user)
     {
-        $user = User::where('live_id', $request->live_id)->first();
-        if($user == ''){
-            //register the user
-            $new = User::create([
-                'lastname' => $request->lastname,
-                'firstname' => $request->firstname,
-                'email' => $request->email,
-                'password' => $request->password,
-                'live_id' => $request->live_id,
-                'phone' => $request->phone,
+        if (Auth::attempt($user)) {
+            $user = User::where('id', auth()->user()->id)->first(['id', 'firstname', 'lastname', 'email', 'phone']);
+            return response($user);
+        } else {
+            return response(['message' => 'error logging in', 'success' => false]);
+        }
+    }
+
+
+
+    function createUser($data)
+    {
+        $user = User::where('live_id', $data['sn'])->first();
+        if ($user == null or $user = '') {
+            User::create([
+                'lastname' => $data['lastname'],
+                'firstname' => $data['firstname'],
+                'email' => $data['email'],
+                'phone' => $data['phone'],
+                'live_id' => $data['sn'],
+                'password' => $data['pass'],
             ]);
-            return response()->json([
-                'success' => true,
-                'message' => 'You Just logged in for the first time',
-                'data' => null,
-            ], 201);
-        }else{ 
-            User::where('live_id', $request->live_id)->update(['password' => $request->password, 'phone' => $request->phone]); 
-            if(auth()->login($user)){
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Login Sucessful',
-                    'data' => auth()->user(),
-                ], 201);
-            }else{
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Login Sucessful',
-                    'data' => auth()->user(),
-                ], 201);
-            }
-        }  
+        } else {
+            User::where('live_id', $data['sn'])->update([
+                'lastname' => $data['lastname'],
+                'firstname' => $data['firstname'],
+                'email' => $data['email'],
+                'phone' => $data['phone'],
+                'password' => $data['pass'],
+            ]);
+        }
     }
 
 
-    function registerUser()
-    {
-        //
-    }
+
+
+
+    // function loginUser(Request $request)
+    // {
+    //     $user = User::where('live_id', $request->live_id)->first();
+    //     if($user == ''){
+    //         //register the user
+    //         $new = User::create([
+    //             'lastname' => $request->lastname,
+    //             'firstname' => $request->firstname,
+    //             'email' => $request->email,
+    //             'password' => $request->password,
+    //             'live_id' => $request->live_id,
+    //             'phone' => $request->phone,
+    //         ]);
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'You Just logged in for the first time',
+    //             'data' => null,
+    //         ], 201);
+    //     }else{
+    //         User::where('live_id', $request->live_id)->update(['password' => $request->password, 'phone' => $request->phone]);
+    //         if(auth()->login($user)){
+    //             return response()->json([
+    //                 'success' => true,
+    //                 'message' => 'Login Sucessful',
+    //                 'data' => auth()->user(),
+    //             ], 201);
+    //         }else{
+    //             return response()->json([
+    //                 'success' => true,
+    //                 'message' => 'Login Sucessful',
+    //                 'data' => auth()->user(),
+    //             ], 201);
+    //         }
+    //     }
+    // }
+
 
 }

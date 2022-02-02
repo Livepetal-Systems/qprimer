@@ -99,10 +99,10 @@ if($type=='submitexam'){
     $total = count($y);
     $x='';
         $i=0; $sc = 0;
-        while($i<$total){ 
-            $e=$i++; $ca=$m[$e]['ca'];  $op=$m[$e]['op']; $q=$m[$e]['q']; 
+        while($i<$total){
+            $e=$i++; $ca=$m[$e]['ca'];  $op=$m[$e]['op']; $q=$m[$e]['q'];
 
-            $x .= '<span style="float:left">Q'.($e+1).'.</span> '.$y[$e]['questions']; 
+            $x .= '<span style="float:left">Q'.($e+1).'.</span> '.$y[$e]['question'];
             $x .= option($y,$e,$q,$ca,$op,'a');
             $x .= option($y,$e,$q,$ca,$op,'b');
             $x .= option($y,$e,$q,$ca,$op,'c');
@@ -121,5 +121,5 @@ if($type=='submitexam'){
 
 
 
-	
+
 ?>

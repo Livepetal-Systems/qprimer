@@ -73,7 +73,7 @@
                             <?php } $y = $que; $i=1;  while($i<=$total){ $e=$i++; $v=$e-1;  ?>
                                 <div id="<?= $e ?>" style="display: none;">
                                     <span class="h4" style="float: left;">Q<?= $e ?>.</span> <span
-                                        class="h4"><?= $y[$v]['questions'] ?></span>
+                                        class="h4"><?= $y[$v]['question'] ?></span>
                                     <?= options($y, $e, $v, 'a') . options($y, $e, $v, 'b') . options($y, $e, $v, 'c') . options($y, $e, $v, 'd') ?>
 
                                 </div>
@@ -94,18 +94,20 @@
                                             <a class="page-link mx-1 rounded" href="javascript:;" onclick="nextQ(0)"><i
                                                     class="mdi mdi-chevron-left"></i> Information</a>
                                         </li>
-                                        <!-- 
-           <li class="page-item">
-            <a class="page-link mx-1 rounded" href="javascript:;">1</a>
-           </li> -->
+
 
                                         <li id="a4" class="page-item">
                                             <a class="page-link mx-1 rounded" href="javascript:;"
                                                 onclick="startExam()">Start Exam <i class="mdi mdi-chevron-right"></i>
                                             </a>
-                                            
+
                                         </li>
+
                                     </ul>
+
+
+                                    <span onclick="endExam()" class="btn btn-sm btn-outline-primary active">Submit Exam</span>
+
                                 </nav>
                             </div>
 
@@ -229,6 +231,7 @@
                     $('#page').html(data);
                     $('#review').html(data);
                 })
+
                 $('#examstat').load('services.php/stat');
                 $.ajax({
                     type: 'get',
@@ -246,14 +249,16 @@
                         }
                     }).done(function(res) {
                         console.log(res);
+                    }).fail(function(res) {
+                        console.log(res);
                     })
                 });
 
-                
+
 
             }
 
-            
+
         </script>
 
 @endsection

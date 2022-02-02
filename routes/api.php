@@ -14,20 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/getSubscribtion/{user}', [\App\Http\Controllers\ApiController::class, 'getProgram'])->name('getProgram');
-Route::get('/getQuestions/{program}/', [\App\Http\Controllers\ApiController::class, 'getQuestion'])->name('getQuestion');
-Route::get('/generateHsitory/{user}', [\App\Http\Controllers\ApiController::class, 'generateHsitory'])->name('generateHsitory');
+// Route::get('/getSubscriptions/{user}', [\App\Http\Controllers\ApiController::class, 'getProgram'])->name('getProgram');
+// Route::get('/getQuestions/{program}/', [\App\Http\Controllers\ApiController::class, 'getQuestion'])->name('getQuestion');
+// Route::get('/generateHsitory/{user}', [\App\Http\Controllers\ApiController::class, 'generateHsitory'])->name('generateHsitory');
 
-Route::post('/apiloginUser', [\App\Http\Controllers\Mobile::class, 'apiloginUser'])->name('apiloginUser');
-Route::post('/submitExam',  [\App\Http\Controllers\ApiController::class, 'answerProcessor'])->name('submitExam');
-
-
-
-Route::middleware('auth:api')->get('/user', function(Request $request) {
-    return $request->user();
-});
+// Route::post('/apiloginUser', [\App\Http\Controllers\Mobile::class, 'apiloginUser'])->name('apiloginUser');
+// Route::post('/submitExam',  [\App\Http\Controllers\ApiController::class, 'answerProcessor'])->name('submitExam');
 
 
+
+// Route::middleware('auth:api')->get('/user', function(Request $request) {
+//     return $request->user();
+// });
 
 
 
@@ -37,9 +35,13 @@ Route::middleware('auth:api')->get('/user', function(Request $request) {
 
 
 
-Route::get('/getProgram/{user}', [\App\Http\Controllers\ApiController::class, 'getProgram'])->name('getProgram');
+
+
+Route::get('/get_program/{user}', [\App\Http\Controllers\ApiController::class, 'getProgram'])->name('getProgram');
 Route::get('/getExam/{program}/', [\App\Http\Controllers\ApiController::class, 'getQuestion'])->name('getQuestion');
-Route::get('/generateHsitory/{user}', [\App\Http\Controllers\ApiController::class, 'generateHsitory'])->name('generateHsitory');
+Route::get('/get_questions/{program}', [\App\Http\Controllers\ApiController::class, 'getQuestion'])->name('getQuestion');
+
+Route::get('/generate_history/{user}', [\App\Http\Controllers\ApiController::class, 'generateHsitory'])->name('generateHsitory');
 
 Route::post('/apiloginUser', [\App\Http\Controllers\Mobile::class, 'apiloginUser'])->name('apiloginUser');
 Route::post('/submitExam',  [\App\Http\Controllers\ApiController::class, 'answerProcessor'])->name('submitExam');

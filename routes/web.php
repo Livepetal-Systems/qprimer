@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('login', function () { return view('login'); });
-Route::post('/loginUser', [\App\Http\Controllers\AuthController::class, 'loginUser'])->name('loginUser');
+Route::post('/loginUser', [\App\Http\Controllers\AuthController::class, 'login'])->name('login.user');
 
 
 Route::get('/logOut', function () {
@@ -102,5 +102,6 @@ Route::get('/insertQuestions', [\App\Http\Controllers\ApiController::class, 'ins
 Route::get('/updateSlugs', [\App\Http\Controllers\ApiController::class, 'updateSlugs'])->name('updateSlugs');
 
 Route::get('/fetchUserProgramViaJs/{user}', function ($user) { return getProgram($user); });
+Route::get('/fetchoo/{user}', function ($user) { return queryForHistory($user); });
 
 

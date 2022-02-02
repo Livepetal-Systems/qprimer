@@ -34,7 +34,7 @@
                         </div>
                         <!-- Card body -->
                         <div class="card-body">
-                            <input type="hidden" id="myExamsJson" value=" {{ json_encode(getProgram(auth()->user()->id)) }} ">
+                            <input type="hidden" id="myExamsJson" value="{{ json_encode(getProgram(auth()->user()->id)) }}">
                             <div class="row" id="displayMyExamsBody">
                             </div>
                         </div>

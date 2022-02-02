@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 function getExam($program, $num)
 {
-    $req = Request::create(env('LINIT').'/getQuestion/'.$program.'/'.$num,'GET');
+    $req = Request::create(env('LINIT').'api/get_questions/'.$program,'GET');
     $res = app()->handle($req);
     return  $res->original;
 }
@@ -21,11 +21,9 @@ function proPics()
 
 function queryForHistory($user)
 {
-    $req = Request::create(env('LINIT').'/generateHsitory/'.$user.'GET');
+    $req = Request::create(env('LINIT').'api/generate_history/'.$user.'GET');
     $res = app()->handle($req); $data =  $res->original;
-
     session()->put('test_history', $data['test_history']);
-
     return  session()->get('test_history');
 }
 
@@ -50,8 +48,9 @@ function getHistory($user)
 
 function startExam()
 {
+
     $data = getExam(session()->get('program'), session()->get('question_num'));
-   session()->put('que', @$data['questions']);
+    session()->put('que', @$data['questions']);
     $data['info']['start'] = time();
     $data['info']['student'] = auth()->user()->id;
     session()->put('p_info', $data['info']);
@@ -69,7 +68,7 @@ function startExamx($que)
     while ($i <= $total) {
         $e = $i++;
         $v = $e - 1;
-        $qsn = $que[$v]['qn'];
+        $qsn = $que[$v]['id'];
         $ca = strtolower($que[$v]['ca']);
         $x[] = array('q' => $e, 'qsn' => $qsn, 'ca' => $ca, 'op' => '');
     }
@@ -154,7 +153,7 @@ function getProgram($user)
 
 function queryForPrograms($id)
 {
-    $req = Request::create(env('LINIT').'/getProgram/'.$id  ,'GET');
+    $req = Request::create(env('LINIT').'api/get_program/'.$id  ,'GET');
     $res = app()->handle($req);
     session()->put('user_program', $res->original);
     return  $res->original;
